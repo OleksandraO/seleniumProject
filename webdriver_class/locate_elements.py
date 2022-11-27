@@ -38,3 +38,11 @@ driver.find_element(By.PARTIAL_LINK_TEXT, 'mail').click()
 time.sleep(5)
 driver.quit()
 print("Test is complete!!")
+
+
+# [
+# <selenium.webdriver.remote.webelement.WebElement (session="a0a87d1a4144f6f37f86eeebf228c320", element="44bdb432-4708-4bf7-bc06-c16271a143bc")>,
+# <selenium.webdriver.remote.webelement.WebElement (session="a0a87d1a4144f6f37f86eeebf228c320", element="4d6f8410-adf5-4e44-835b-2de79ec8eb01")>,
+# <selenium.webdriver.remote.webelement.WebElement (session="a0a87d1a4144f6f37f86eeebf228c320", element="e46f454f-7fb2-4e2e-8e96-fa26d9008c3e")>,
+# <selenium.webdriver.remote.webelement.WebElement (session="a0a87d1a4144f6f37f86eeebf228c320", element="35e0bd9c-d11d-449c-9c77-53f4d95f7cbe")>
+# ]
