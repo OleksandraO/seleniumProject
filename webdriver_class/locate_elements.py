@@ -21,7 +21,8 @@ time.sleep(5)
 fullname = driver.find_element(By.ID, "userName")
 fullname.send_keys('John')
 # driver.find_element(By.NAME, 'q')
-driver.find_element(By.TAG_NAME, 'textarea').send_keys("selenium found 'textarea on html, this is first element of this type")
+driver.find_element(By.TAG_NAME, 'textarea').send_keys("selenium found 'textarea on html, this is first element of "
+                                                       "this type")
 element_list = driver.find_elements(By.CLASS_NAME, 'form-control')    # list
 print(element_list)
 print(f"Number of elements in primary_buttons list: {len(element_list)}")
