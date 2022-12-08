@@ -58,14 +58,14 @@ try:
     wdwait.until(EC.text_to_be_present_in_element((By.ID, target_text_id), 'Selenium'))
     print('Text Displayed, after:', driver.find_element(By.ID, target_text_id).text)
 
-    print("# 3. check if button is displayed, click on 'Display button after ...' button, wait until hidden button is displayed, verify button is enabled")
+    print(" # 3. check if button is displayed, click on 'Display button after ...' button, wait until hidden button is displayed, verify button is enabled")
     print('Is button displayed, before:', driver.find_element(By.ID, hidden_button_id).is_displayed())
     driver.find_element(By.ID, display_other_button_id).click()
     print("applying explicit wait ...")
     wdwait.until(EC.visibility_of_element_located((By.ID, hidden_button_id)))
     print('Is button displayed, after:', driver.find_element(By.ID, hidden_button_id).is_displayed())
 
-    print("# 4. check if button is enabled, Click on 'Enable button after..' button, wait until 'Button' is enabled, click enabled Button")
+    print(" # 4. check if button is enabled, Click on 'Enable button after..' button, wait until 'Button' is enabled, click enabled Button")
     print('Is button enabled, before:', driver.find_element(By.ID, disabled_button_id).is_enabled())
     driver.find_element(By.ID, button_id).click()
     print("applying explicit wait ...")
@@ -73,7 +73,7 @@ try:
     print('Is button enabled, after:', driver.find_element(By.ID, disabled_button_id).is_enabled())
     driver.find_element(By.ID, disabled_button_id).click()
 
-    print("# 5. check if 'Checkbox' is checked, click 'Check Checkbox ...' button, wait until Checkbox is checked, verify 'Checkbox' is checked.")
+    print(" # 5. check if 'Checkbox' is checked, click 'Check Checkbox ...' button, wait until Checkbox is checked, verify 'Checkbox' is checked.")
     print('Is Checkbox checked, before:', driver.find_element(By.ID, checkbox_id).is_selected())
     # driver.find_element(By.ID, check_button_id).click()
     wdwait.until(EC.presence_of_element_located((By.ID, check_button_id))).click()
