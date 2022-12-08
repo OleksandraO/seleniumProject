@@ -286,18 +286,78 @@ driver.find_elements(By.PARTIAL_LINK_TEXT, 'Add to')
 Demo website: https://www.seleniumeasy.com/test/basic-first-form-demo.html
 
 Example of Locating the element uniquely
-1. xpath 
+### 1. xpath 
 ```python
 msg_xpath = '//form/div/input[@id="user-message" and @class="form-control"]'
+# Building xpath 
+# //tag[@att='value']
+# //tag[text()='value']
+
+# option1: 
+text_xpath = "//span[@class='mr-3' and @name='text1']"
+
+# Using text of the element to build the xpath: 
+# option2: 
+text1_xpath = "//span[text()='Click Button to see alert ']"
+# option3: 
+text1_xpath = "//span[contains(text(), 'Click Button to')]"
+
+# 12/03/2022 HW reading: https://www.guru99.com/xpath-selenium.html
 ```
 This is the xpath for the below element.
 ```html
+<span class="mr-3" name="text1">Click Button to see alert </span>
 <input type="text" class="form-control" name="input-message" placeholder="Please enter your Message" id="user-message">
 Some text here
 </input>
+<div class="col">
+	<button id="alertButton" type="button" class="btn btn-primary">Click me</button>
+</div>
 ```
 
-  
+### 2. CSS Selector: 
+Syntax for Locating by CSS Selector Usage
+
+
+||Method	|| Target Syntax ||	Example ||
+|Tag and ID |	css=tag#id	| css=input#email |
+|Tag and Class	| css=tag.class	| css=input.inputtext |
+|Tag and Attribute|	css=tag[attribute=value] |	css=inp ut[name=lastName] |
+|Tag, Class, and Attribute|	css=tag.class[attribute=value] | css=input.inputtext[tabindex=1] |
+
+[Find out more about CSS Selector here](https://www.guru99.com/locators-in-selenium-ide.html)
+
+
+** Converting Xpath to CSS selector ** 
+HTML document elements you want to locate: 
+```html
+<span class="mr-3" name="text1">Click Button to see alert </span>
+<input type="text" class="form-control" name="input-message" placeholder="Please enter your Message" id="user-message">
+Some text here
+</input>
+<div class="col">
+	<button id="alertButton" type="button" class="btn btn-primary">Click me</button>
+</div>
+```
+
+CSS selectors to build based on above html elements:
+
+```python
+"//span[text()='Click Button to see alert ']"
+text_css_selector = "span:contains('Click Button to see alert ')"
+
+text_xpath = "//span[@class='mr-3'" 
+text_css_selector = "span.mr-3"
+
+alert_xpath = "//span[@id='alert1']" 
+alert_css_selector = "span#alert1"
+
+alert_id = 'alertButton'
+alert_xpath = "//button[@id='alertButton' and @type='button']"
+alert_css_selector = 'button#alertButton'
+alert_css_selector = 'button.btn-primary'
+```
+
   **Tags to know:**
 ```html
 links, images, forms (textbox, radio, checkbox, submit, fileupload, <input>, <label>, <select>, <textarea>, <button>)
@@ -385,6 +445,19 @@ element.send_keys(Keys.UP)
 element.text   # property - you must not use parenthesis
 ```
 
+## 12/01/2022 Agenda of recent and future classes
+
+- 11/27 - WebElement: forms, jscript execute, xpath
+- 12/1 - Q&A - overall - Technical Interview Questions
+- 12/3 - selenium WebElement: locators(xpath, css selector), drop down, alerts
+- 12/4 - Selenium advanced: explicit waits
+- 12/8 - Selenium advanced: mouse movements, screenshots, logs
+- 12/8 - Unit Testing Framework: Pytest
+- 12/10-12/11 - Automation Testing Framework: Pytest, page object modeling
+
+- Java - backend language (python, C#, ...)
+- javascript - UI/front end language (executed on the browser)
+
 Assertion: 
 - from python to verify something
 - it generates pass/fail status in unittests
@@ -393,6 +466,72 @@ Assertion:
 Xpath="//tagname[@attribute='value']"
 msg_xpah = "//input[@name = 'input-message']"
 
+```
+### WebElement class : Forms
+
+
+### WebElement class : get_attribute
+html  document: 
+```html
+...
+<input type="text" id="firstname" name="firstname" value=""
+title="First Name" maxlength="255" class="input-text
+required-entry">
+...
+
+```
+
+python selenium code: 
+```python
+...
+firstname_elem = driver.find_element(By.ID, fn_input)
+print(firstname_elem.get_attribute('maxlength')) -> 255
+print(firstname_elem.get_attribute('name')) -> 'firstname'
+print(firstname_elem.get_attribute('class')) -> "input-text required-entry"
+firstname_elem.send_keys(Keys.ENTER)
+print(firstname_elem.get_attribute('class')) -> "input-text required-entry"
+...
+```
+
+### WebElement class : drop down list
+Using Select class to handle drop down list element that is with 'select' tag and 'option' child elements
+```html
+...
+<select id="select-language" title="Your Language" onchange="window.location.href=this.value">
+    <option value="http://demo.magentocommerce.com/?___store=default&amp;___from_store=default" selected="selected">English</option>
+    <option value="http://demo.magentocommerce.com/?___store=french&amp;___from_store=default">French</option>
+    <option value="http://demo.magentocommerce.com/?___store=german&amp;___from_store=default">German</option>
+</select>
+...
+```
+Python Selenium code for above element: 
+```python
+from selenium.webdriver.support.select import Select
+
+drop_down_elem = driver.find_element(By.TAG_NAME, country_dd_tag)
+country_selection = Select(drop_down_elem)
+print('First Selected option: ', country_selection.first_selected_option.text)
+country_selection.select_by_index(2)
+print("Selected country: ", country_selection.all_selected_options[0].text)
+country_selection.select_by_value('FRA')
+country_selection.select_by_visible_text('United States')
+
+
+```
+
+
+### WebElement class : Alerts
+
+```python
+...
+# switch to the alert
+alert = driver.switch_to.alert()
+# get the text from alert
+alert_text = alert.text
+alert.accept() # click OK button on alert box
+alert.dismiss() # click Cancel button on alert box
+alert.send_keys() # enter a text on the alert box
+...
 ```
 
 ---------------
@@ -409,6 +548,44 @@ Synchronization methods: explicit wait : WebDriverWait class, expected_condition
 WebDriver provides the WebDriverWait and
 expected_conditions classes to implement an explicit wait.
   [practice website](https://chercher.tech/practice/explicit-wait-sample-selenium-webdriver)
+### Using implicit wait
+The implicit wait offers a generic way to synchronize the entire test or group of steps in WebDriver. Implicit wait is useful in dealing with situations where the
+application's response time is inconsistent due to network speed or applications that use dynamically rendered elements with Ajax calls.
+
+When we set an implicit wait on WebDriver, it polls or searches the DOM for a certain amount of time to find an element or elements if they are not immediately available. By default, the implicit wait timeout is set to 0.
+
+Once set, the implicit wait is set for the life of the WebDriver instance or for the entire duration of the test, and the WebDriver applies this implicit wait for all the 
+steps that find the elements on the page unless we set it back to 0. The webdriver class provides the implicitly_wait() method to configure timeout.
+
+### Using explicit wait
+The explicit wait is another wait mechanism available in WebDriver to synchronize tests. Explicit wait provides a better control when compared to implicit wait. Unlike
+an implicit wait, we can use a set of predefined or custom conditions for the script to wait for before proceeding with further steps.
+
+An explicit wait can only be implemented in specific cases where script synchronization is needed. WebDriver provides the WebDriverWait and
+expected_conditions classes to implement an explicit wait. The expected_conditions class provides a set of predefined conditions to wait for before proceeding further in the code.
+
+```python
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.implicitly_wait(20)
+
+# wait for the alert to present
+# alert = WebDriverWait(driver, 10).until(expected_conditions.alert_is_present())
+alert = WebDriverWait(driver, 10).until(EC.alert_is_present())
+# wait for Clear All link to be visible
+clear_all_link = WebDriverWait(driver, 7).until(EC.visibility_of_element_located((By.LINK_TEXT, "Clear All")))
+wdwait = WebDriverWait(driver, 15)
+wdwait.until(EC.text_to_be_present_in_element((By.ID, target_text_id), 'Selenium'))
+wdwait.until(EC.visibility_of_element_located((By.ID, hidden_button_id)))
+wdwait.until(EC.element_to_be_clickable((By.ID, disabled_button_id)))
+wdwait.until(EC.element_to_be_selected(driver.find_element(By.ID, checkbox_id)))
+```
+You can see more examples of the conditions from expected_conditions class on page 94 of the [book](data/Learning_Selenium.pdf).
+
 
 ## 5. Chapter 9. Advanced Techniques of Selenium WebDriver 
 
@@ -527,7 +704,6 @@ Videos to watch:
 - [CI/CD pipelines and working with Jenkins and AWS](https://drive.google.com/drive/folders/1GEP_Bw_mQVpc2RDdZS3AIUk_UygyzwPA?usp=sharing)
 - [All Mock interviews to watch](https://drive.google.com/drive/folders/1oxyinen_o7BWBTrUSNzhhcvsrVXbUpI3?usp=sharing)
 
-
 ----- 
 **Automation practice websites:**
 - https://courses.letskodeit.com/practice
@@ -539,16 +715,6 @@ Videos to watch:
 1. [HTTP messages used in API calls](https://www.w3schools.com/tags/ref_httpmessages.asp)
 2. [HTML document and tags](https://www.w3schools.com/tags/tag_span.asp)
 3. [Learning Selenium Testing Tools with Python (book)](data/Learning_Selenium.pdf)
-4. [What is xpath and how to build them.](https://www.guru99.com/xpath-selenium.html)
-5. [Socratica playlist in youtube](https://youtu.be/bY6m6_IIN94)
-
-
-
-
-
-
-
-
-
-
-
+4. [The Ultimate Selenium Python Cheat Sheet for Test Automation](https://www.lambdatest.com/blog/selenium-python-cheat-sheet/)
+5. [What is xpath and how to build them.](https://www.guru99.com/xpath-selenium.html)
+6. [Socratica playlist in youtube](https://youtu.be/bY6m6_IIN94)
